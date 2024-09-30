@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: '17'
 
       # Step 3: Cache Gradle dependencies (optional but recommended)
       - name: Cache Gradle packages
