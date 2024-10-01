@@ -24,6 +24,7 @@ swaggerAnnotations = "2.2.15"
 ktor-content-negotiation = "2.3.12"      # Match the Ktor version
 ktor-serialization-jackson = "2.3.12"   # Match the Ktor version
 jackson-module-kotlin = "2.15.2"
+foundationAndroid = "1.7.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -50,6 +51,7 @@ swagger-annotations = { group = "io.swagger.core.v3", name = "swagger-annotation
 ktor-serialization-jackson = { module = "io.ktor:ktor-serialization-jackson-jvm", version.ref = "ktor-serialization-jackson" }
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation-jvm", version.ref = "ktor-content-negotiation" }
 jackson-module-kotlin = { group = "com.fasterxml.jackson.module", name = "jackson-module-kotlin", version.ref = "jackson-module-kotlin" }
+androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "foundationAndroid" }
 
 
 

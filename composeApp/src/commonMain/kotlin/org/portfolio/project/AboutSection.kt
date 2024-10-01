@@ -71,7 +71,7 @@ fun AboutSection(onContactClick: () -> Unit) {
 fun SocialIcon(iconResId: Painter, onClick: () -> Unit) {
     Box(
         modifier = Modifier
-            .size(56.dp) // Adjust size as needed
+            .size(44.dp) // Adjust size as needed
             .background(Color.Gray, shape = RoundedCornerShape(8.dp)) // Add background and corner shape
             .padding(4.dp) // Optional padding
     ) {
@@ -79,7 +79,7 @@ fun SocialIcon(iconResId: Painter, onClick: () -> Unit) {
             Image(
                 painter = iconResId,
                 contentDescription = null,
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(32.dp)
             )
         }
     }

@@ -118,6 +118,7 @@ android {
 dependencies {
     implementation(libs.androidx.espresso.web)
     implementation(libs.androidx.ui.android)
+    implementation(libs.androidx.foundation.android)
 }
 
 compose.desktop {

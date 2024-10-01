@@ -56,7 +56,8 @@ fun App() {
         }
 
         if (!showLandingPage) {
-            MainContent()
+            //MainContent()
+            Portfolio()
         }
     }
 }
