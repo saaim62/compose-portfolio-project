@@ -1,10 +1,8 @@
 package org.portfolio.project
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -16,14 +14,103 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cmp_portfolio_project.composeapp.generated.resources.Res
+import cmp_portfolio_project.composeapp.generated.resources.websiteBG
+import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun App() {
+
+    var showLandingPage by remember { mutableStateOf(true) }
+    LaunchedEffect(Unit) {
+        delay(3000) // Wait for 3 seconds before switching to the main content
+        showLandingPage = false
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFF0A0A0A), // Dark background
+                        Color(0xFF1A1A1A)  // Slight gradient to darker tones
+                    )
+                )
+            )
+    ) {
+        AnimatedVisibility(
+            visible = showLandingPage,
+            exit = slideOutVertically(animationSpec = tween(1000)) + fadeOut(animationSpec = tween(1000)),
+        ) {
+            LandingPage()
+        }
+
+        if (!showLandingPage) {
+            MainContent()
+        }
+    }
+}
+
+@Composable
+fun LandingPage() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        // Background Image Layer
+        Image(
+            painter = painterResource(Res.drawable.websiteBG),  // Use your background image resource
+            contentDescription = "Background Image",
+            modifier = Modifier.fillMaxSize(),  // Make the image fill the whole screen
+            contentScale = ContentScale.Crop    // Crop the image to fit the screen without distortion
+        )
+
+        // Text Layer (On top of the image)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = "Not Your\nAverage\nSoftware\nEngineer",  // Playfair Display font
+                style = TextStyle(
+                    fontSize = 45.sp,  // Use 45px equivalent in sp
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.W900,
+                    fontStyle = FontStyle.Italic,
+                ),
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+            Text(
+                text = "Get ready to turn your ideas into reality",  // Montserrat font
+                style = TextStyle(
+                    color = Color.Gray,
+                    textAlign = TextAlign.Center,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W400,
+                    fontStyle = FontStyle.Italic,
+                    textDecoration = TextDecoration.Underline
+                )
+            )
+        }
+    }
+}
+
+@Composable
+fun MainContent() {
     val colors = darkColors(
         primary = Color(0xFF262626),       // Gold accents (used sparingly)
         onPrimary = Color.White,           // White on gold elements
@@ -84,7 +171,7 @@ fun App() {
                 var selectedTab by remember { mutableStateOf(0) }
                 NavigationTabs(selectedTab = selectedTab, onTabSelected = { selectedTab = it })
                 Spacer(modifier = Modifier.height(24.dp))
-                ContentSection(selectedTab = selectedTab){
+                ContentSection(selectedTab = selectedTab) {
                     selectedTab = 5
                 }
                 Spacer(modifier = Modifier.height(24.dp))
@@ -136,10 +223,6 @@ fun NavigationTabs(selectedTab: Int, onTabSelected: (Int) -> Unit) {
     }
 }
 
-
-
-
-
 @Composable
 fun ContentSection(selectedTab: Int, onContactSelected: () -> Unit) {
     val tabContent: List<@Composable () -> Unit> = listOf(
@@ -175,3 +258,4 @@ fun AnimatedText(text: String, style: TextStyle) {
         visible = true
     }
 }
+

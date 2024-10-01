@@ -45,8 +45,9 @@ fun HeroSection() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = 24.dp)
             .height(500.dp)
-            .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
+            .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp, topStart = 32.dp, topEnd = 32.dp))
             .background(
                 Brush.linearGradient(
                     colors = heroGradientColors,
@@ -65,15 +66,15 @@ fun HeroSection() {
             // Profile Image
             @OptIn(ExperimentalResourceApi::class)
             (Image(
-        painter = painterResource(Res.drawable.myImage),
-        contentDescription = "Profile Image",
-        modifier = Modifier
-            .size(200.dp)
-            .clip(CircleShape)
-            .border(4.dp, Color(0xFFB8860B), CircleShape)  // Gold border around the profile image
-            .shadow(8.dp),
-        contentScale = ContentScale.Crop
-    ))
+                painter = painterResource(Res.drawable.myImage),
+                contentDescription = "Profile Image",
+                modifier = Modifier
+                    .size(200.dp)
+                    .clip(CircleShape)
+                    .border(4.dp, Color(0xFFB8860B), CircleShape)  // Gold border around the profile image
+                    .shadow(8.dp),
+                contentScale = ContentScale.Crop
+            ))
             Spacer(modifier = Modifier.height(16.dp))
 
             // Animated Name and Title
