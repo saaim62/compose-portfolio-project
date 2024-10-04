@@ -9,6 +9,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,8 +21,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -29,6 +32,9 @@ import androidx.compose.material.Typography
 import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,31 +56,31 @@ import cmp_portfolio_project.composeapp.generated.resources.myImage
 import cmp_portfolio_project.composeapp.generated.resources.twiter
 import org.jetbrains.compose.resources.painterResource
 
-val DarkBackground = Color(0xFF0A192F)
-val LightText = Color(0xFFCCD6F6)
-val HighlightText = Color(0xFF64FFDA)
+val DarkBlueBackground = Color(0xFF0A1F44)
+val LightBlueText = Color(0xFFCCD6F6)
+val HighlightBlue = Color(0xFF64B5F6)
 
 val heroGradientColors = listOf(
-    Color(0xFF121212),
-    Color(0xFF3C3C3C),
+    Color(0xFF0A1F44),
+    Color(0xFF1C2E5B),
 )
 
 val TitleTypography = TextStyle(
     fontSize = 36.sp,
     fontWeight = FontWeight.Bold,
-    color = Color.White
+    color = LightBlueText
 )
 
 val SubtitleTypography = TextStyle(
     fontSize = 20.sp,
     fontWeight = FontWeight.Medium,
-    color = Color.White
+    color = LightBlueText
 )
 
 val BodyTypography = TextStyle(
     fontSize = 16.sp,
     fontWeight = FontWeight.Normal,
-    color = Color.White
+    color = LightBlueText
 )
 
 @Composable
@@ -84,20 +90,20 @@ fun Portfolio() {
         initialValue = 0f,
         targetValue = 1000f,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 12000, easing = LinearEasing),
+            animation = tween(durationMillis = 15000, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
         )
     )
 
     val colors = darkColors(
-        primary = Color(0xFF262626),       // Gold accents (used sparingly)
-        onPrimary = Color.White,           // White on gold elements
-        secondary = Color(0xFF262626),     // Secondary subtle gold (used for slight highlights)
-        onSecondary = Color.Black,         // Black on secondary elements
-        surface = Color(0xFF121212),
-        onSurface = Color.White,           // White text on dark surfaces
-        background = Color(0xFF121212),    // Matte black background
-        onBackground = Color.White         // White text on matte black background
+        primary = LightBlueText,       // Darker blue for main accents
+        onPrimary = LightBlueText,          // Light text on blue background
+        secondary = HighlightBlue,          // Light blue for highlights
+        onSecondary = Color.Black,          // Black text on secondary elements
+        surface = DarkBlueBackground,       // Dark blue surface
+        onSurface = LightBlueText,          // White text on dark surfaces
+        background = DarkBlueBackground,    // Dark blue background
+        onBackground = LightBlueText        // White text on the background
     )
 
     MaterialTheme(
@@ -106,21 +112,21 @@ fun Portfolio() {
             h3 = TextStyle(
                 fontWeight = FontWeight.Bold,
                 fontSize = 32.sp,
-                color = Color.White // White text for headers
+                color = LightBlueText // Light blue for headers
             ),
             h5 = TextStyle(
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
-                color = Color.White // White text for subheadings
+                color = LightBlueText // Light blue for subheadings
             ),
             body1 = TextStyle(
                 fontSize = 16.sp,
-                color = Color.White // White text for body content
+                color = LightBlueText // Light blue text for body content
             ),
             button = TextStyle(
                 fontWeight = FontWeight.Medium,
                 fontSize = 14.sp,
-                color = Color.Black // Black text on buttons with gold background
+                color = Color.Black // Black text on light blue buttons
             )
         )
     ) {
@@ -147,45 +153,97 @@ fun Portfolio() {
 
 @Composable
 fun AboutMe() {
-
     Column(
+        horizontalAlignment = Alignment.Start,
         modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth(0.45f),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxWidth(0.45f)
+            .padding(start = 64.dp),
     ) {
-        (Image(
+        Image(
             painter = painterResource(Res.drawable.myImage),
             contentDescription = "Profile Image",
             modifier = Modifier
                 .size(200.dp)
                 .clip(CircleShape)
-                .border(4.dp, Color(0xFFB8860B), CircleShape)  // Gold border around the profile image
+                .border(4.dp, HighlightBlue, CircleShape)  // Blue border around the profile image
                 .shadow(8.dp),
             contentScale = ContentScale.Crop
-        ))
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Muhammad Saim", style = TitleTypography)
         Text(text = "Senior Software Engineer", style = SubtitleTypography)
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Android Developer | Kotlin | Java | React | React native | KMP | CMP | Ktor | Firebase | Web deployment.",
+            text = "Android Developer | Kotlin | Java |",
+            style = BodyTypography
+        )
+        Text(
+            text = "React | React Native | KMP | CMP |",
+            style = BodyTypography
+        )
+
+        Text(
+            text = "Ktor | Firebase | Web deployment.",
             style = BodyTypography
         )
         Spacer(modifier = Modifier.height(32.dp))
-
+        MenuSection()
+        Spacer(modifier = Modifier.height(32.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.Center,
+                .padding(end = 120.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom
         ) {
             SocialIcon(painterResource(Res.drawable.github), {})
             SocialIcon(painterResource(Res.drawable.linkedin), {})
             SocialIcon(painterResource(Res.drawable.twiter), {})
             SocialIcon(painterResource(Res.drawable.facebook), {})
             SocialIcon(painterResource(Res.drawable.instagram), {})
+        }
+    }
+}
+
+@Composable
+fun MenuSection() {
+    var selectedMenuItem by remember { mutableStateOf("About") } // Initially selected item
+
+    val menuItems = listOf("About", "Experience", "Projects")
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Center
+    ) {
+        menuItems.forEach { item ->
+            val isSelected = selectedMenuItem == item
+            Row(
+                modifier = Modifier
+                    .clickable {
+                        selectedMenuItem = item  // Update the selected item
+                    }
+                    .padding(bottom = 8.dp)
+            ) {
+                val fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                val color = if (isSelected) Color.White else LightBlueText
+                val textSize = if (isSelected) 18.sp else 16.sp
+
+                Spacer(
+                    modifier = Modifier.padding(top = 8.dp).width(if (isSelected) 64.dp else 32.dp)
+                        .height(3.dp)
+                        .background(Color.White)
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    text = item,
+                    fontWeight = fontWeight,
+                    color = color,
+                    fontSize = textSize
+                )
+            }
         }
     }
 }
