@@ -58,7 +58,7 @@ fun ContactSection() {
                 ContactItem(
                     icon = Icons.Default.Email,
                     contactText = "saaim62@gmail.com",
-                    onClick = { /* TODO: Handle email intent */ }
+                    onClick = { openUrl("saaim62@gmail.com") }
                 )
                 ContactItem(
                     icon = Icons.Default.Phone,
@@ -68,12 +68,12 @@ fun ContactSection() {
                 ContactItem(
                     icon = Icons.Default.Link,
                     contactText = "linkedin.com/in/saim",
-                    onClick = { /* TODO: Handle LinkedIn intent */ }
+                    onClick = { openUrl("https://www.linkedin.com/in/muhammad-saim-android-dev")}
                 )
                 ContactItem(
                     icon = Icons.Default.Web,
-                    contactText = "github.com/saim",
-                    onClick = { /* TODO: Handle GitHub intent */ }
+                    contactText = "github.com/saaim62",
+                    onClick = { openUrl("https://github.com/saaim62") }
                 )
             }
         }

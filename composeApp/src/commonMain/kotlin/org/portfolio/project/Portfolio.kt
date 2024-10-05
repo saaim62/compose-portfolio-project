@@ -66,13 +66,13 @@ val heroGradientColors = listOf(
 )
 
 val TitleTypography = TextStyle(
-    fontSize = 36.sp,
+    fontSize = 48.sp,
     fontWeight = FontWeight.Bold,
     color = LightBlueText
 )
 
 val SubtitleTypography = TextStyle(
-    fontSize = 20.sp,
+    fontSize = 24.sp,
     fontWeight = FontWeight.Medium,
     color = LightBlueText
 )
@@ -153,54 +153,47 @@ fun Portfolio() {
 
 @Composable
 fun AboutMe() {
-    Column(
-        horizontalAlignment = Alignment.Start,
-        modifier = Modifier
-            .fillMaxWidth(0.45f)
-            .padding(start = 64.dp),
-    ) {
-        Image(
-            painter = painterResource(Res.drawable.myImage),
-            contentDescription = "Profile Image",
-            modifier = Modifier
-                .size(200.dp)
-                .clip(CircleShape)
-                .border(4.dp, HighlightBlue, CircleShape)  // Blue border around the profile image
-                .shadow(8.dp),
-            contentScale = ContentScale.Crop
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Muhammad Saim", style = TitleTypography)
-        Text(text = "Senior Software Engineer", style = SubtitleTypography)
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Android Developer | Kotlin | Java |",
-            style = BodyTypography
-        )
-        Text(
-            text = "React | React Native | KMP | CMP |",
-            style = BodyTypography
-        )
-
-        Text(
-            text = "Ktor | Firebase | Web deployment.",
-            style = BodyTypography
-        )
-        Spacer(modifier = Modifier.height(32.dp))
-        MenuSection()
-        Spacer(modifier = Modifier.height(32.dp))
-        Row(
+    Row(
+        modifier = Modifier.fillMaxHeight().fillMaxWidth(0.5f)
+    ){
+        Column(modifier = Modifier
+            .fillMaxWidth(0.2f)) {  }
+        Column(
+            horizontalAlignment = Alignment.Start,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = 120.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Bottom
         ) {
-            SocialIcon(painterResource(Res.drawable.github), {})
-            SocialIcon(painterResource(Res.drawable.linkedin), {})
-            SocialIcon(painterResource(Res.drawable.twiter), {})
-            SocialIcon(painterResource(Res.drawable.facebook), {})
-            SocialIcon(painterResource(Res.drawable.instagram), {})
+            Image(
+                painter = painterResource(Res.drawable.myImage),
+                contentDescription = "Profile Image",
+                modifier = Modifier
+                    .padding(top = 24.dp, start = 48.dp)
+                    .size(160.dp)
+                    .clip(CircleShape)
+                    .border(4.dp, HighlightBlue, CircleShape)
+                    .shadow(8.dp),
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(text = "Muhammad Saim", style = TitleTypography)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "Senior Software Engineer", style = SubtitleTypography)
+            Spacer(modifier = Modifier.height(32.dp))
+            MenuSection()
+            Spacer(modifier = Modifier.height(32.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 120.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                SocialIcon(painterResource(Res.drawable.github)) { openUrl("https://github.com/saaim62") }
+                SocialIcon(painterResource(Res.drawable.linkedin)){openUrl("https://www.linkedin.com/in/muhammad-saim-android-dev/")}
+                SocialIcon(painterResource(Res.drawable.twiter)){openUrl("https://github.com/saaim62")}
+                SocialIcon(painterResource(Res.drawable.facebook)){openUrl("https://github.com/saaim62")}
+                SocialIcon(painterResource(Res.drawable.instagram)){openUrl("https://github.com/saaim62")}
+            }
         }
     }
 }
@@ -258,7 +251,7 @@ fun ScrollableScreen() {
             .verticalScroll(scrollState)
             .padding(16.dp)
     ) {
-        Column {
+        Column(modifier = Modifier.fillMaxWidth(0.9f)){
             if (getScreenDimensions().width < 800) {
                 AboutMe()
                 Experience()
@@ -268,13 +261,13 @@ fun ScrollableScreen() {
                 Projects()
             }
         }
+        Column(modifier = Modifier.fillMaxWidth(0.1f)) {  }
     }
 }
 
 @Composable
 fun Experience() {
     ExperienceSection()
-    SkillsSection()
 }
 
 @Composable
