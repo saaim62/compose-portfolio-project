@@ -12,7 +12,7 @@ actual fun getScreenDimensions(): Dimensions {
         height = screenSize.height
     )
 }
-
-actual fun openUrl(url: String) {
-    Desktop.getDesktop().browse(URI(url))
-}
+//
+//actual fun openUrl(url: String) {
+//    Desktop.getDesktop().browse(URI(url))
+//}

@@ -43,6 +43,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -55,6 +57,8 @@ import cmp_portfolio_project.composeapp.generated.resources.linkedin
 import cmp_portfolio_project.composeapp.generated.resources.myImage
 import cmp_portfolio_project.composeapp.generated.resources.twiter
 import org.jetbrains.compose.resources.painterResource
+
+
 
 val DarkBlueBackground = Color(0xFF0A1F44)
 val LightBlueText = Color(0xFFCCD6F6)
@@ -153,6 +157,7 @@ fun Portfolio() {
 
 @Composable
 fun AboutMe() {
+    val uriHandler: UriHandler = LocalUriHandler.current
     Row(
         modifier = Modifier.fillMaxHeight().fillMaxWidth(0.5f)
     ){
@@ -188,11 +193,11 @@ fun AboutMe() {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Bottom
             ) {
-                SocialIcon(painterResource(Res.drawable.github)) { openUrl("https://github.com/saaim62") }
-                SocialIcon(painterResource(Res.drawable.linkedin)){openUrl("https://www.linkedin.com/in/muhammad-saim-android-dev/")}
-                SocialIcon(painterResource(Res.drawable.twiter)){openUrl("https://github.com/saaim62")}
-                SocialIcon(painterResource(Res.drawable.facebook)){openUrl("https://github.com/saaim62")}
-                SocialIcon(painterResource(Res.drawable.instagram)){openUrl("https://github.com/saaim62")}
+                SocialIcon(painterResource(Res.drawable.github)) { uriHandler.openUri("https://github.com/saaim62") }
+                SocialIcon(painterResource(Res.drawable.linkedin)){uriHandler.openUri("https://www.linkedin.com/in/muhammad-saim-android-dev/")}
+                SocialIcon(painterResource(Res.drawable.twiter)){uriHandler.openUri("https://github.com/saaim62")}
+                SocialIcon(painterResource(Res.drawable.facebook)){uriHandler.openUri("https://github.com/saaim62")}
+                SocialIcon(painterResource(Res.drawable.instagram)){uriHandler.openUri("https://github.com/saaim62")}
             }
         }
     }

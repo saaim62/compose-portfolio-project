@@ -9,7 +9,7 @@ actual fun getScreenDimensions(): Dimensions {
         height = window.innerHeight
     )
 }
-
-actual fun openUrl(url: String) {
-    window.open(url,"_blank")
-}
+//
+//actual fun openUrl(url: String) {
+//    window.open(url,"_blank")
+//}

@@ -1,14 +1,16 @@
 package org.portfolio.project
+
+import kotlinx.cinterop.ExperimentalForeignApi
+import platform.CoreGraphics.CGRectGetWidth
+import platform.CoreGraphics.CGRectGetHeight
 import platform.UIKit.UIScreen
-import platform.Foundation.NSURL
 
 actual fun getPlatform(): String = "iOS"
+
+@OptIn(ExperimentalForeignApi::class)
 actual fun getScreenDimensions(): Dimensions {
     val bounds = UIScreen.mainScreen.bounds
-    return Dimensions(bounds.size.width.toInt(), bounds.size.height.toInt())
-}
-
-actual fun openUrl(url: String) {
-    val nsUrl = NSURL.URLWithString(url)!!
-    UIApplication.sharedApplication.openURL(nsUrl)
+    val width = CGRectGetWidth(bounds) // Use CGRectGetWidth to access width
+    val height = CGRectGetHeight(bounds) // Use CGRectGetHeight to access height
+    return Dimensions(width.toInt(), height.toInt())
 }

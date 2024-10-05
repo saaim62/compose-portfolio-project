@@ -21,13 +21,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 
 @Composable
 fun ContactSection() {
-    // Fade-In Animation
+    val uriHandler: UriHandler = LocalUriHandler.current
+
     AnimatedVisibility(
         visible = true,
         enter = fadeIn(animationSpec = tween(1000)),
@@ -58,22 +61,22 @@ fun ContactSection() {
                 ContactItem(
                     icon = Icons.Default.Email,
                     contactText = "saaim62@gmail.com",
-                    onClick = { openUrl("saaim62@gmail.com") }
+                    onClick = { uriHandler.openUri("mailto:saaim62@gmail.com") }
                 )
                 ContactItem(
                     icon = Icons.Default.Phone,
                     contactText = "+92 320 6090154",
-                    onClick = { /* TODO: Handle phone intent */ }
+                    onClick = { /* You could handle phone here if needed */ }
                 )
                 ContactItem(
                     icon = Icons.Default.Link,
                     contactText = "linkedin.com/in/saim",
-                    onClick = { openUrl("https://www.linkedin.com/in/muhammad-saim-android-dev")}
+                    onClick = { uriHandler.openUri("https://www.linkedin.com/in/muhammad-saim-android-dev") }
                 )
                 ContactItem(
                     icon = Icons.Default.Web,
                     contactText = "github.com/saaim62",
-                    onClick = { openUrl("https://github.com/saaim62") }
+                    onClick = { uriHandler.openUri("https://github.com/saaim62") }
                 )
             }
         }

@@ -13,7 +13,7 @@ actual fun getScreenDimensions(): Dimensions {
     )
 }
 
-actual fun openUrl(url: String) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-    ContextHolder.context.startActivity(intent)
-}
+//actual fun openUrl(url: String) {
+//    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+//    ContextHolder.context.startActivity(intent)
+//}
