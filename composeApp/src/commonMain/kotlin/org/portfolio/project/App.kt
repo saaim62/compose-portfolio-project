@@ -29,7 +29,6 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun App() {
-
     var showLandingPage by remember { mutableStateOf(true) }
     LaunchedEffect(Unit) {
         delay(3000) // Wait for 3 seconds before switching to the main content
@@ -56,8 +55,7 @@ fun App() {
         }
 
         if (!showLandingPage) {
-            //MainContent()
-            Portfolio()
+            MainContent()
         }
     }
 }

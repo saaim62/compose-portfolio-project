@@ -7,6 +7,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,17 +25,20 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.Typography
 import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,8 +60,9 @@ import cmp_portfolio_project.composeapp.generated.resources.instagram
 import cmp_portfolio_project.composeapp.generated.resources.linkedin
 import cmp_portfolio_project.composeapp.generated.resources.myImage
 import cmp_portfolio_project.composeapp.generated.resources.twiter
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
-
 
 
 val DarkBlueBackground = Color(0xFF0A1F44)
@@ -134,6 +139,19 @@ fun Portfolio() {
             )
         )
     ) {
+        val scrollState = rememberScrollState()
+        val selectedMenuItem = remember { mutableStateOf("About") }
+
+        LaunchedEffect(scrollState) {
+            snapshotFlow { scrollState.value }.collectLatest { scrollY ->
+                when {
+                    scrollY < 550 -> selectedMenuItem.value = "About"
+                    scrollY in 550..2124 -> selectedMenuItem.value = "Experience"
+                    scrollY >= 2125 -> selectedMenuItem.value = "Projects"
+                }
+            }
+        }
+
         Row(
             modifier = Modifier
                 .background(
@@ -146,23 +164,25 @@ fun Portfolio() {
                 .fillMaxSize(),
         ) {
             if (getScreenDimensions().width < 800) {
-                ScrollableScreen()
+                ScrollableScreen(scrollState, selectedMenuItem)
             } else {
-                AboutMe()
-                ScrollableScreen()
+                AboutMe(scrollState, selectedMenuItem)
+                ScrollableScreen(scrollState, selectedMenuItem)
             }
         }
     }
 }
 
 @Composable
-fun AboutMe() {
+fun AboutMe(scrollState: ScrollState, selectedMenuItem: MutableState<String>) {
     val uriHandler: UriHandler = LocalUriHandler.current
     Row(
         modifier = Modifier.fillMaxHeight().fillMaxWidth(0.5f)
-    ){
-        Column(modifier = Modifier
-            .fillMaxWidth(0.2f)) {  }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(0.2f)
+        ) { }
         Column(
             horizontalAlignment = Alignment.Start,
             modifier = Modifier
@@ -184,29 +204,28 @@ fun AboutMe() {
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = "Senior Software Engineer", style = SubtitleTypography)
             Spacer(modifier = Modifier.height(32.dp))
-            MenuSection()
+            MenuSection(scrollState, selectedMenuItem)
             Spacer(modifier = Modifier.height(32.dp))
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 120.dp),
+                    .fillMaxSize()
+                    .padding(end = 120.dp, bottom = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Bottom
             ) {
                 SocialIcon(painterResource(Res.drawable.github)) { uriHandler.openUri("https://github.com/saaim62") }
-                SocialIcon(painterResource(Res.drawable.linkedin)){uriHandler.openUri("https://www.linkedin.com/in/muhammad-saim-android-dev/")}
-                SocialIcon(painterResource(Res.drawable.twiter)){uriHandler.openUri("https://github.com/saaim62")}
-                SocialIcon(painterResource(Res.drawable.facebook)){uriHandler.openUri("https://github.com/saaim62")}
-                SocialIcon(painterResource(Res.drawable.instagram)){uriHandler.openUri("https://github.com/saaim62")}
+                SocialIcon(painterResource(Res.drawable.linkedin)) { uriHandler.openUri("https://www.linkedin.com/in/muhammad-saim-android-dev/") }
+                SocialIcon(painterResource(Res.drawable.twiter)) { uriHandler.openUri("https://github.com/saaim62") }
+                SocialIcon(painterResource(Res.drawable.facebook)) { uriHandler.openUri("https://github.com/saaim62") }
+                SocialIcon(painterResource(Res.drawable.instagram)) { uriHandler.openUri("https://github.com/saaim62") }
             }
         }
     }
 }
 
 @Composable
-fun MenuSection() {
-    var selectedMenuItem by remember { mutableStateOf("About") } // Initially selected item
-
+fun MenuSection(scrollState: ScrollState, selectedMenuItem: MutableState<String>) {
+    val coroutineScope = rememberCoroutineScope() // Get the coroutine scope
     val menuItems = listOf("About", "Experience", "Projects")
 
     Column(
@@ -217,11 +236,20 @@ fun MenuSection() {
         verticalArrangement = Arrangement.Center
     ) {
         menuItems.forEach { item ->
-            val isSelected = selectedMenuItem == item
+            val isSelected = selectedMenuItem.value == item
             Row(
                 modifier = Modifier
                     .clickable {
-                        selectedMenuItem = item  // Update the selected item
+                        selectedMenuItem.value = item
+                        coroutineScope.launch {
+                            val scrollPosition = when (item) {
+                                "About" -> 0
+                                "Experience" -> 550
+                                "Projects" -> 2150
+                                else -> 0
+                            }
+                            scrollState.animateScrollTo(scrollPosition)
+                        }
                     }
                     .padding(bottom = 8.dp)
             ) {
@@ -247,8 +275,7 @@ fun MenuSection() {
 }
 
 @Composable
-fun ScrollableScreen() {
-    val scrollState = rememberScrollState()
+fun ScrollableScreen(scrollState: ScrollState, selectedMenuItem: MutableState<String>) {
     Box(
         modifier = Modifier
             .fillMaxWidth(1f)
@@ -256,9 +283,9 @@ fun ScrollableScreen() {
             .verticalScroll(scrollState)
             .padding(16.dp)
     ) {
-        Column(modifier = Modifier.fillMaxWidth(0.9f)){
+        Column(modifier = Modifier.fillMaxWidth(0.9f)) {
             if (getScreenDimensions().width < 800) {
-                AboutMe()
+                AboutMe(scrollState, selectedMenuItem)
                 Experience()
                 Projects()
             } else {
@@ -266,17 +293,18 @@ fun ScrollableScreen() {
                 Projects()
             }
         }
-        Column(modifier = Modifier.fillMaxWidth(0.1f)) {  }
+        Column(modifier = Modifier.fillMaxWidth(0.1f)) { }
     }
 }
 
 @Composable
 fun Experience() {
+    AboutMyself()
     ExperienceSection()
 }
 
 @Composable
 fun Projects() {
-    TestimonialsSection()
+    ProjectsSection()
     ContactSection()
 }
